@@ -9,7 +9,7 @@ export const chromium={async launch(options={}){
   const prepare=async context=>{
     // The application explicitly supports system fallbacks. Font-service outages
     // must not hold page load open or make functional checks depend on the WAN.
-    await context.route(/^https:\/\/fonts\.(googleapis|gstatic)\.com\//,route=>route.abort());
+    await context.route(/^https:\/\/fonts\.googleapis\.com\//,route=>route.fulfill({status:200,contentType:'text/css',body:''}));
     return context;
   };
   const contextOptions=options=>({...options,...(ci?{deviceScaleFactor:.25}:{})});
