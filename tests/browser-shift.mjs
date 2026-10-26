@@ -1,8 +1,8 @@
 import assert from 'node:assert/strict';
-import {chromium} from '@playwright/test';
+import {chromium} from './browser-support.mjs';
 import {ORDERS} from '../src/world.mjs';
 import {beakPoint} from '../src/pose.mjs';
-const browser=await chromium.launch({channel:process.env.BROWSER_CHANNEL||'chrome',headless:true,args:process.env.CI?['--enable-unsafe-swiftshader']:[]}),page=await browser.newPage({viewport:{width:1440,height:900}}),base=process.env.CLIENT_URL||'http://127.0.0.1:5173';
+const browser=await chromium.launch({channel:process.env.BROWSER_CHANNEL||'chrome',headless:true,args:[]}),page=await browser.newPage({viewport:{width:1440,height:900}}),base=process.env.CLIENT_URL||'http://127.0.0.1:5173';
 const diag=()=>page.evaluate(()=>window.pigeonDiagnostics());
 async function walk(x,z){
   let held=[];

@@ -1,6 +1,6 @@
-import {chromium} from '@playwright/test';
+import {chromium} from './browser-support.mjs';
 import {writeFile} from 'node:fs/promises';
-const browser=await chromium.launch({channel:process.env.BROWSER_CHANNEL||'chrome',headless:true,args:process.env.CI?['--enable-unsafe-swiftshader']:[]}),page=await browser.newPage({viewport:{width:1440,height:900}});
+const browser=await chromium.launch({channel:process.env.BROWSER_CHANNEL||'chrome',headless:true,args:[]}),page=await browser.newPage({viewport:{width:1440,height:900}});
 const errors=[];page.on('pageerror',e=>errors.push(e.message));page.on('console',m=>{if(m.type()==='error'&&!m.text().includes('404'))errors.push(m.text());});
 try{
   await page.goto('http://127.0.0.1:5173');await page.waitForTimeout(1000);

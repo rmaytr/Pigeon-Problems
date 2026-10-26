@@ -1,8 +1,8 @@
 import assert from 'node:assert/strict';
-import {chromium} from '@playwright/test';
+import {chromium} from './browser-support.mjs';
 import {writeFile,mkdir} from 'node:fs/promises';
 import {makeState,addPlayer,snapshot} from '../src/engine.mjs';
-const base=process.env.CLIENT_URL||'http://127.0.0.1:5173',browser=await chromium.launch({channel:process.env.BROWSER_CHANNEL||'chrome',headless:true,args:[...(process.env.CI?['--enable-unsafe-swiftshader']:[]),'--use-fake-ui-for-media-stream','--use-fake-device-for-media-stream']}),checks=[],errors=[];
+const base=process.env.CLIENT_URL||'http://127.0.0.1:5173',browser=await chromium.launch({channel:process.env.BROWSER_CHANNEL||'chrome',headless:true,args:['--use-fake-ui-for-media-stream','--use-fake-device-for-media-stream']}),checks=[],errors=[];
 const diag=p=>p.evaluate(()=>window.pigeonDiagnostics()),watch=p=>p.on('pageerror',e=>errors.push(e.message)),check=(name,value)=>{assert(value,name);checks.push(name);console.log('PASS '+name);};
 try{
  const context=await browser.newContext({viewport:{width:1440,height:900},permissions:['microphone']}),page=await context.newPage();watch(page);let creations=0;

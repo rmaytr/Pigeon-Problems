@@ -1,9 +1,9 @@
 import assert from 'node:assert/strict';
-import {chromium} from '@playwright/test';
+import {chromium} from './browser-support.mjs';
 import {mkdir,writeFile} from 'node:fs/promises';
 const base=process.env.CLIENT_URL||'http://127.0.0.1:5173',out=new URL('../evidence/',import.meta.url);
 await mkdir(out,{recursive:true});
-const browser=await chromium.launch({channel:process.env.BROWSER_CHANNEL||'chrome',headless:true,args:[...(process.env.CI?['--enable-unsafe-swiftshader']:[]),'--use-fake-ui-for-media-stream','--use-fake-device-for-media-stream','--autoplay-policy=no-user-gesture-required']});
+const browser=await chromium.launch({channel:process.env.BROWSER_CHANNEL||'chrome',headless:true,args:['--use-fake-ui-for-media-stream','--use-fake-device-for-media-stream','--autoplay-policy=no-user-gesture-required']});
 const results=[],errors=[];
 const check=(name,value)=>{assert(value,name);results.push(name);console.log('PASS '+name);};
 const a=await browser.newContext({viewport:{width:1440,height:900},permissions:['microphone','clipboard-write']});
@@ -27,8 +27,8 @@ try{
   check('homepage has a rendered 3D scene', (await diag(p)).renderer.triangles>10000);
   await p.getByRole('button',{name:'Solo practice',exact:true}).click();await p.getByRole('button',{name:'Delivery practice',exact:true}).click();await wait(p,()=>window.pigeonDiagnostics().phase==='playing');
   check('solo practice begins playable tutorial',(await diag(p)).solo);
-  await p.keyboard.down('Space');await p.waitForTimeout(300);await p.keyboard.up('Space');check('keyboard hop produces lift',(await diag(p)).players[0].y>1);
-  await p.waitForTimeout(1700);await walk(p,.4,0);await p.keyboard.press('e');await p.waitForTimeout(120);check('keyboard grabs actual cargo',(await diag(p)).players[0].grip!==null);
+  await p.keyboard.down('Space');await wait(p,()=>window.pigeonDiagnostics().players[0].y>1);check('keyboard hop produces lift',(await diag(p)).players[0].y>1);await p.keyboard.up('Space');
+  await wait(p,()=>window.pigeonDiagnostics().players[0].ground);await walk(p,.4,0);await p.keyboard.press('e');await p.waitForTimeout(120);check('keyboard grabs actual cargo',(await diag(p)).players[0].grip!==null);
   await walk(p,.4,4.9);await walk(p,12,4.9);await walk(p,12,0);await p.keyboard.press('e');await wait(p,()=>window.pigeonDiagnostics().order===1);
   check('browser delivery completes using only keyboard movement and placement',(await diag(p)).completed.length===1);
   await p.screenshot({path:new URL('gameplay.png',out).pathname.replace(/^\/(\w:)/,'$1')});
@@ -55,7 +55,7 @@ try{
   await b.close();
   const mobile=await browser.newContext({viewport:{width:390,height:844},isMobile:true,hasTouch:true}),m=await mobile.newPage();await m.goto(base);await wait(m,()=>!!window.pigeonDiagnostics);
   check('mobile homepage has no horizontal overflow',await m.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));await m.screenshot({path:new URL('mobile-home.png',out).pathname.replace(/^\/(\w:)/,'$1')});
-  await m.getByRole('button',{name:'Solo practice',exact:true}).click();await m.getByRole('button',{name:'Delivery practice',exact:true}).click();await m.getByRole('button',{name:'Hop and flap',exact:true}).dispatchEvent('pointerdown',{pointerId:1,clientX:200,clientY:720});await m.waitForTimeout(250);await m.getByRole('button',{name:'Hop and flap',exact:true}).dispatchEvent('pointerup',{pointerId:1});check('touch flap control creates lift',(await diag(m)).players[0].y>.5);
+  await m.getByRole('button',{name:'Solo practice',exact:true}).click();await m.getByRole('button',{name:'Delivery practice',exact:true}).click();await m.getByRole('button',{name:'Hop and flap',exact:true}).dispatchEvent('pointerdown',{pointerId:1,clientX:200,clientY:720});await wait(m,()=>window.pigeonDiagnostics().players[0].y>.5);check('touch flap control creates lift',(await diag(m)).players[0].y>.5);await m.getByRole('button',{name:'Hop and flap',exact:true}).dispatchEvent('pointerup',{pointerId:1});
   await m.screenshot({path:new URL('mobile-game.png',out).pathname.replace(/^\/(\w:)/,'$1')});await mobile.close();
   check('no uncaught browser errors',errors.length===0);
   if(!process.env.NO_REPORT)await writeFile(new URL('browser-results.json',out),JSON.stringify({date:new Date().toISOString(),base,checks:results,errors},null,2));

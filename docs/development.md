@@ -82,7 +82,8 @@ deployed backend. See [deployment](deployment.md).
   use `--with-deps` for system libraries. Individual scripts default to Chrome;
   set `BROWSER_CHANNEL=chromium` if that is the browser you installed.
 - **WebGL unavailable:** enable hardware acceleration/use a WebGL-capable browser.
-  CI opts into Chromium's software WebGL fallback; its frame rate is not a benchmark.
+  CI uses software WebGL and a 0.25 device pixel ratio, preserving CSS layout sizes;
+  its frame rate is not a benchmark. Local runs retain normal device pixel ratio.
 - **Room connection fails:** use `npm run dev`, check the health endpoint at
   `/api/health`, and remove an unintended `VITE_SERVER_URL` override.
 - **Fonts unavailable:** hosted Google Fonts fall back to system fonts. Browser

@@ -26,8 +26,12 @@ physical-controller compatibility, enjoyment or balance. Read-only
 position/state write endpoint.
 
 CI runs on Ubuntu with Node 24 and downloaded Chromium. Local Chrome runs are
-reported separately. Software WebGL is enabled in browser verification for runners
-without a hardware GPU; timing/performance in CI is not used as a benchmark.
+reported separately. Software WebGL and a 0.25 device pixel ratio reduce raster
+work on runners without a hardware GPU while preserving the CSS viewport/layout
+sizes and all assertions. This is functional browser QA, not full-resolution visual
+certification; timing/performance in CI is not used as a benchmark. Hosted font
+requests are blocked in tests to exercise the supported system fallback without
+depending on an external font service. Normal gameplay still loads its fonts.
 
 ## Longer route checks
 

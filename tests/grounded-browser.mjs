@@ -1,8 +1,8 @@
 import assert from 'node:assert/strict';
-import {chromium} from '@playwright/test';
+import {chromium} from './browser-support.mjs';
 import {writeFile} from 'node:fs/promises';
 const base=process.env.CLIENT_URL||'http://127.0.0.1:5173',checks=[],errors=[];
-const b=await chromium.launch({channel:process.env.BROWSER_CHANNEL||'chrome',headless:true,args:process.env.CI?['--enable-unsafe-swiftshader']:[]}),p=await b.newPage({viewport:{width:1440,height:900}});
+const b=await chromium.launch({channel:process.env.BROWSER_CHANNEL||'chrome',headless:true,args:[]}),p=await b.newPage({viewport:{width:1440,height:900}});
 p.on('pageerror',e=>errors.push(e.message));const diag=()=>p.evaluate(()=>window.pigeonDiagnostics());
 const check=(name,value)=>{assert(value,name);checks.push(name);console.log('PASS '+name);};
 async function walk(x,z){let held=[];for(let i=0;i<400;i++){const d=await diag(),q=d.players[0],dx=x-q.x,dz=z-q.z;if(Math.hypot(dx,dz)<.22){for(const k of held)await p.keyboard.up(k);await p.waitForTimeout(140);return;}const sx=dx*.903-dz*.43,sz=dx*.43+dz*.903,l=Math.max(.01,Math.hypot(sx,sz)),next=[];if(Math.abs(sx/l)>.4)next.push(sx>0?'d':'a');if(Math.abs(sz/l)>.4)next.push(sz>0?'s':'w');for(const k of held)if(!next.includes(k))await p.keyboard.up(k);for(const k of next)if(!held.includes(k))await p.keyboard.down(k);held=next;await p.waitForTimeout(55);}throw Error('Route stalled');}

@@ -1,8 +1,8 @@
 import assert from 'node:assert/strict';
-import {chromium} from '@playwright/test';
+import {chromium} from './browser-support.mjs';
 import {writeFile} from 'node:fs/promises';
 const base=process.env.CLIENT_URL||'http://127.0.0.1:5173';
-const browser=await chromium.launch({channel:process.env.BROWSER_CHANNEL||'chrome',headless:true,args:process.env.CI?['--enable-unsafe-swiftshader']:[]}),checks=[],errors=[];
+const browser=await chromium.launch({channel:process.env.BROWSER_CHANNEL||'chrome',headless:true,args:[]}),checks=[],errors=[];
 const page=await browser.newPage({viewport:{width:1440,height:900}});page.on('pageerror',e=>errors.push(e.message));
 const diag=p=>(p??page).evaluate(()=>window.pigeonDiagnostics());
 const check=(name,value)=>{assert(value,name);checks.push(name);console.log('PASS '+name);};

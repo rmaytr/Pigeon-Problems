@@ -1,6 +1,6 @@
-import {chromium} from '@playwright/test';
+import {chromium} from './browser-support.mjs';
 import {writeFile} from 'node:fs/promises';
-const base=process.env.CLIENT_URL||'http://127.0.0.1:5173',browser=await chromium.launch({channel:process.env.BROWSER_CHANNEL||'chrome',headless:true,args:process.env.CI?['--enable-unsafe-swiftshader']:[]}),page=await browser.newPage({viewport:{width:1440,height:900}}),errors=[];
+const base=process.env.CLIENT_URL||'http://127.0.0.1:5173',browser=await chromium.launch({channel:process.env.BROWSER_CHANNEL||'chrome',headless:true,args:[]}),page=await browser.newPage({viewport:{width:1440,height:900}}),errors=[];
 page.on('pageerror',e=>errors.push(e.message));page.on('console',m=>{if(m.type()==='error')errors.push(m.text());});
 async function sample(){return page.evaluate(()=>new Promise(resolve=>{const intervals=[],start=performance.now();let last=start;function frame(now){intervals.push(now-last);last=now;if(now-start<4000)requestAnimationFrame(frame);else{intervals.sort((a,b)=>a-b);resolve({durationMs:now-start,frames:intervals.length,fps:intervals.length*1000/(now-start),p95ms:intervals[Math.floor(intervals.length*.95)],renderer:window.pigeonDiagnostics().renderer});}}requestAnimationFrame(frame);}));}
 try{

@@ -1,9 +1,9 @@
 import assert from 'node:assert/strict';
-import {chromium} from '@playwright/test';
+import {chromium} from './browser-support.mjs';
 import {writeFile} from 'node:fs/promises';
 import {COURSES} from '../src/courses.mjs';
 import {trialPilot} from './trial-pilot.mjs';
-const base=process.env.CLIENT_URL||'http://127.0.0.1:5173',selected=process.env.COURSES?.split(',')||COURSES.map(c=>c.id),browser=await chromium.launch({channel:process.env.BROWSER_CHANNEL||'chrome',headless:true,args:process.env.CI?['--enable-unsafe-swiftshader']:[]}),page=await browser.newPage({viewport:{width:1440,height:900}}),errors=[],results=[];
+const base=process.env.CLIENT_URL||'http://127.0.0.1:5173',selected=process.env.COURSES?.split(',')||COURSES.map(c=>c.id),browser=await chromium.launch({channel:process.env.BROWSER_CHANNEL||'chrome',headless:true,args:[]}),page=await browser.newPage({viewport:{width:1440,height:900}}),errors=[],results=[];
 page.on('pageerror',e=>errors.push(e.message));page.on('console',m=>{if(m.type()==='error')errors.push(m.text());});
 const diag=()=>page.evaluate(()=>window.pigeonDiagnostics());
 let held=[],pulse=0,heldJump=false;
