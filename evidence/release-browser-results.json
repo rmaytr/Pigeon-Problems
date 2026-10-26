@@ -1,0 +1,25 @@
+{
+  "date": "2026-10-26T14:48:16.220Z",
+  "base": "http://127.0.0.1:5173",
+  "checks": [
+    "failed room creation explains the error and leaves retry enabled",
+    "Enter submits the create-room form",
+    "trial HUD exposes microphone status and a voice leave control",
+    "leaving voice from a trial stops its tracks",
+    "held touch input actually flaps",
+    "hiding the page cancels touch flapping",
+    "returning to the page does not resume a stale held touch",
+    "small-screen gameplay has a discoverable recovery menu",
+    "cancelled touch movement stops rather than sticking",
+    "320-pixel gameplay has no horizontal overflow",
+    "mobile interaction and stamina panels do not overlap crew controls",
+    "Enter submits the join-code form",
+    "retry closes the superseded socket",
+    "obsolete socket messages cannot overwrite the current connection",
+    "replacement socket can still join normally",
+    "late messages after leaving cannot resurrect a room",
+    "no uncaught errors in release checks"
+  ],
+  "errors": [],
+  "method": "real browser UI; real service for creation/trial/voice; injected HTTP failure and mock WebSocket races explicitly isolated"
+}

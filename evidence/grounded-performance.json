@@ -1,0 +1,18 @@
+{
+  "date": "2026-10-26T06:27:58.508Z",
+  "viewport": "1440x900",
+  "browser": "headless Chrome, local machine",
+  "durationMs": 3001.30000000596,
+  "frames": 181,
+  "fps": 60.30720021312117,
+  "p95ms": 16.90000000000009,
+  "renderer": {
+    "frame": 294,
+    "calls": 153,
+    "triangles": 40258,
+    "points": 0,
+    "lines": 88
+  },
+  "cargoHeld": true,
+  "previewActive": true
+}

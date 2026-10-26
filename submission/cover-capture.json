@@ -1,0 +1,13 @@
+{
+  "date": "2026-10-26T16:43:55.990Z",
+  "source": "https://pigeon-problems.smoky-harp-3438.chatgpt.site",
+  "width": 1800,
+  "height": 1200,
+  "aspect": "3:2",
+  "kind": "unaltered browser screenshot",
+  "scene": "two independent browser clients carrying the oversized baguette after completing the first delivery",
+  "players": 2,
+  "carriers": 2,
+  "input": "simulated standard gamepad steering and keyboard grip actions; no game state or camera writes",
+  "errors": []
+}

@@ -1,0 +1,17 @@
+name: Bug report
+description: Report a reproducible gameplay or technical issue.
+body:
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Steps and behavior
+      description: Mode/course, player count, steps, expected result and actual result. Do not include reconnect tickets or credentials.
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: Environment
+      description: Browser/version, OS and input device.
+    validations:
+      required: true

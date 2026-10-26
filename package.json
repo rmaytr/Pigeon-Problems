@@ -1,0 +1,36 @@
+{
+  "name": "pigeon-problems",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "node server/local.mjs",
+    "build": "vite build",
+    "preview": "vite preview --host 127.0.0.1",
+    "test": "node --test --test-isolation=none tests/*.test.mjs",
+    "test:network": "node tests/network.mjs",
+    "test:browser": "node tests/browser.mjs",
+    "deploy:server": "wrangler deploy",
+    "test:integration": "node scripts/verify.mjs integration",
+    "test:ui": "node scripts/verify.mjs ui",
+    "docs:check": "node scripts/check-docs.mjs"
+  },
+  "dependencies": {
+    "three": "^0.180.0",
+    "ws": "^8.18.3"
+  },
+  "devDependencies": {
+    "vite": "^7.1.12",
+    "wrangler": "^4.92.0",
+    "@playwright/test": "^1.56.1"
+  },
+  "description": "A 1\u20134 player cooperative rooftop platformer with procedural 3D art and authoritative WebSocket multiplayer.",
+  "engines": {
+    "node": ">=24"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rmaytr/Pigeon-Problems.git"
+  },
+  "homepage": "https://pigeon-problems.smoky-harp-3438.chatgpt.site/"
+}

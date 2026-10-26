@@ -1,0 +1,15 @@
+{
+  "date": "2026-10-26T07:12:52.789Z",
+  "base": "http://127.0.0.1:5173",
+  "checks": [
+    "mouse never rotates a stationary body",
+    "head remains within 65 degrees",
+    "first delivery remains playable with new grips",
+    "long cargo sags and drags in actual gameplay",
+    "walking animates foot lift",
+    "flight lifts pigeon and constrained load",
+    "dropped load settles on roof",
+    "no uncaught browser errors"
+  ],
+  "errors": []
+}

@@ -1,0 +1,15 @@
+node_modules/
+dist/
+.wrangler/
+.openai/
+.sites-runtime/
+.env*
+!.env.example
+*.log
+*-release.tar.gz
+test-results/
+playwright-report/
+evidence/*.png
+evidence/*-local-*.json
+.DS_Store
+Thumbs.db

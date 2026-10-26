@@ -1,0 +1,27 @@
+{
+  "date": "2026-10-26T14:46:14.670Z",
+  "base": "http://127.0.0.1:5173",
+  "checks": [
+    "homepage has a rendered 3D scene",
+    "solo practice begins playable tutorial",
+    "keyboard hop produces lift",
+    "keyboard grabs actual cargo",
+    "browser delivery completes using only keyboard movement and placement",
+    "cargo recall preserves checkpoint",
+    "key remapping works",
+    "invite link joins a separate browser context",
+    "voice enters muted",
+    "voice creates peer audio elements",
+    "microphone toggle enables track",
+    "refresh returns same pigeon",
+    "mute preference survives refresh",
+    "browser motion synchronizes to remote client",
+    "online browser cargo ownership is synchronized",
+    "contextual help ping reaches teammate",
+    "leaving releases voice resources",
+    "mobile homepage has no horizontal overflow",
+    "touch flap control creates lift",
+    "no uncaught browser errors"
+  ],
+  "errors": []
+}

@@ -1,0 +1,22 @@
+{
+  "date": "2026-10-26T14:46:37.559Z",
+  "base": "http://127.0.0.1:5173",
+  "checks": [
+    "marked endpoint can be grabbed",
+    "mouse supplies continuous aim",
+    "stationary mouse changes direction",
+    "trajectory includes collision-aware landing",
+    "movement and aim remain independent",
+    "head independently tracks look direction",
+    "hold left mouse lines up without dropping",
+    "mouse release throws cargo",
+    "throw uses continuous mouse direction",
+    "articulated flight wing cycle changes pose",
+    "free aim replicates to another client",
+    "touch drag supplies analog aim",
+    "touch release throws",
+    "gamepad right stick aims and retains direction",
+    "new art and aiming have no browser runtime errors"
+  ],
+  "errors": []
+}

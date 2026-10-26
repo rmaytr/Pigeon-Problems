@@ -1,0 +1,52 @@
+{
+  "date": "2026-10-26T08:16:17.924Z",
+  "base": "https://pigeon-problems-realtime.pigeon-problems.workers.dev",
+  "room": "ZYY94E",
+  "count": 4,
+  "results": [
+    {
+      "time": 16.4,
+      "falls": 0,
+      "medal": "Gold",
+      "score": 1444,
+      "course": "chimneys"
+    },
+    {
+      "time": 16,
+      "falls": 0,
+      "medal": "Gold",
+      "score": 1506,
+      "course": "laundry"
+    },
+    {
+      "time": 30.3,
+      "falls": 16,
+      "medal": "Bronze",
+      "score": 879,
+      "course": "gusts"
+    },
+    {
+      "time": 18.1,
+      "falls": 0,
+      "medal": "Gold",
+      "score": 1498,
+      "course": "clockwork"
+    },
+    {
+      "time": 17.4,
+      "falls": 0,
+      "medal": "Gold",
+      "score": 1560,
+      "course": "freight"
+    },
+    {
+      "time": 30.3,
+      "falls": 8,
+      "medal": "Bronze",
+      "score": 1249,
+      "course": "peak"
+    }
+  ],
+  "rematch": true,
+  "input": "real WebSockets, server-owned positions, normal inputs/actions only"
+}

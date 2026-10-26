@@ -1,0 +1,35 @@
+{
+  "date": "2026-10-26T07:10:08.271Z",
+  "base": "http://127.0.0.1:5173",
+  "viewport": "1440x900",
+  "browser": "headless Chrome, local machine",
+  "home": {
+    "durationMs": 4006.3000000238426,
+    "frames": 235,
+    "fps": 58.65761425719528,
+    "p95ms": 16.899999999999636,
+    "renderer": {
+      "frame": 399,
+      "calls": 196,
+      "triangles": 302446,
+      "points": 0,
+      "lines": 4
+    }
+  },
+  "gameplay": {
+    "durationMs": 4001.5000000178807,
+    "frames": 241,
+    "fps": 60.22741471921107,
+    "p95ms": 16.80000000000109,
+    "renderer": {
+      "frame": 815,
+      "calls": 141,
+      "triangles": 244100,
+      "points": 0,
+      "lines": 16
+    }
+  },
+  "cargoHeld": true,
+  "previewActive": true,
+  "errors": []
+}

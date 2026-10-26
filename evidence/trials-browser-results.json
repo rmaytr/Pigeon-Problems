@@ -1,0 +1,50 @@
+{
+  "date": "2026-10-26T08:02:57.945Z",
+  "base": "http://127.0.0.1:5173",
+  "results": [
+    {
+      "course": "chimneys",
+      "time": 16.2,
+      "falls": 0,
+      "medal": "Gold",
+      "score": 1445
+    },
+    {
+      "course": "laundry",
+      "time": 17.3,
+      "falls": 0,
+      "medal": "Gold",
+      "score": 1501
+    },
+    {
+      "course": "gusts",
+      "time": 18.2,
+      "falls": 1,
+      "medal": "Silver",
+      "score": 1487
+    },
+    {
+      "course": "clockwork",
+      "time": 17.9,
+      "falls": 0,
+      "medal": "Gold",
+      "score": 1498
+    },
+    {
+      "course": "freight",
+      "time": 16.9,
+      "falls": 0,
+      "medal": "Gold",
+      "score": 1562
+    },
+    {
+      "course": "peak",
+      "time": 33.8,
+      "falls": 3,
+      "medal": "Silver",
+      "score": 1435
+    }
+  ],
+  "errors": [],
+  "input": "ordinary keyboard actions, read-only diagnostics; no position/state write hooks"
+}

@@ -1,0 +1,35 @@
+import assert from 'node:assert/strict';
+import {chromium} from '@playwright/test';
+import {writeFile} from 'node:fs/promises';
+const base=process.env.CLIENT_URL||'http://127.0.0.1:5173';
+const browser=await chromium.launch({channel:process.env.BROWSER_CHANNEL||'chrome',headless:true,args:process.env.CI?['--enable-unsafe-swiftshader']:[]}),checks=[],errors=[];
+const page=await browser.newPage({viewport:{width:1440,height:900}});page.on('pageerror',e=>errors.push(e.message));
+const diag=p=>(p??page).evaluate(()=>window.pigeonDiagnostics());
+const check=(name,value)=>{assert(value,name);checks.push(name);console.log('PASS '+name);};
+try{
+  await page.goto(base);await page.getByRole('button',{name:'Solo practice',exact:true}).click();await page.getByRole('button',{name:'Delivery practice',exact:true}).click();await page.waitForTimeout(700);
+  await page.keyboard.press('e');await page.waitForTimeout(120);check('marked endpoint can be grabbed',(await diag()).players[0].grip!==null);
+  await page.mouse.move(940,550);await page.waitForTimeout(250);const first=await diag();
+  check('mouse supplies continuous aim',Number.isFinite(first.players[0].aim)&&Math.abs(first.players[0].aim/(Math.PI/4)-Math.round(first.players[0].aim/(Math.PI/4)))>.02);
+  await page.mouse.move(600,580);await page.waitForTimeout(100);const second=await diag();
+  check('stationary mouse changes direction',Math.abs(second.players[0].aim-first.players[0].aim)>.1);
+  check('trajectory includes collision-aware landing',second.aimPreview.points.length>3&&['roof','wall','alley'].includes(second.aimPreview.hit));
+  await page.mouse.move(720,580);await page.keyboard.down('d');await page.waitForTimeout(230);const walk=await diag();await page.keyboard.up('d');await page.waitForTimeout(80);check('movement and aim remain independent',Math.abs(walk.players[0].a-walk.players[0].aim)>.1);check('head independently tracks look direction',Math.abs(walk.animation.headYaw)>.05);
+  await page.screenshot({path:'evidence/art-carry.png'});
+  await page.mouse.down();await page.waitForTimeout(100);const linedUp=await diag();check('hold left mouse lines up without dropping',linedUp.players[0].grip!==null);await page.mouse.up();await page.waitForTimeout(80);const thrown=await diag();
+  check('mouse release throws cargo',thrown.players[0].grip===null&&thrown.cargo.throwId===1);
+  check('throw uses continuous mouse direction',Math.abs(Math.atan2(thrown.cargo.vz,thrown.cargo.vx)-linedUp.players[0].aim)<.1);
+  await page.keyboard.down('Space');await page.waitForTimeout(200);const wingA=(await diag()).animation.wingSpread;await page.waitForTimeout(140);const wingB=(await diag()).animation.wingSpread;await page.screenshot({path:'evidence/art-flight.png'});await page.keyboard.up('Space');check('articulated flight wing cycle changes pose',Math.abs(wingA-wingB)>.05);
+  await page.waitForTimeout(1400);await page.keyboard.press('Escape');await page.getByRole('button',{name:'Leave shift',exact:true}).click();await page.screenshot({path:'evidence/art-home.png'});
+  // Two real rendered contexts, same local/public server, authoritative aim replication.
+  await page.getByRole('button',{name:'Clock in with friends'}).click();await page.getByRole('button',{name:'Create private crew',exact:true}).click();await page.waitForFunction(()=>window.pigeonDiagnostics().connection==='online');const room=(await diag()).code;
+  const other=await browser.newPage({viewport:{width:1280,height:800}});await other.goto(base+'/?room='+room);await other.getByRole('button',{name:'Join crew',exact:true}).click();await other.waitForFunction(()=>window.pigeonDiagnostics().connection==='online');await page.getByRole('button',{name:'Start the shift',exact:true}).click();await page.waitForFunction(()=>window.pigeonDiagnostics().phase==='playing');await page.waitForTimeout(500);await page.mouse.move(840,440);await page.waitForTimeout(200);
+  const local=await diag(),remote=await diag(other),remoteMe=remote.players.find(p=>p.id===local.id);check('free aim replicates to another client',Math.abs(remoteMe.aim-local.players.find(p=>p.id===local.id).aim)<.15);
+  await other.close();
+  const mobile=await browser.newPage({viewport:{width:390,height:844},isMobile:true,hasTouch:true});await mobile.goto(base);await mobile.getByRole('button',{name:'Solo practice',exact:true}).click();await mobile.getByRole('button',{name:'Delivery practice',exact:true}).click();await mobile.getByRole('button',{name:'Grab',exact:true}).click();await mobile.waitForTimeout(120);
+  const button=mobile.getByRole('button',{name:'Drag to aim and release to throw',exact:true}),rect=await button.boundingBox();
+  await button.dispatchEvent('pointerdown',{pointerId:11,pointerType:'touch',clientX:rect.x+20,clientY:rect.y+20});await mobile.locator('body').dispatchEvent('pointermove',{pointerId:11,pointerType:'touch',clientX:rect.x-35,clientY:rect.y-25});await mobile.waitForTimeout(180);check('touch drag supplies analog aim',Number.isFinite((await diag(mobile)).players[0].aim));await mobile.locator('body').dispatchEvent('pointerup',{pointerId:11,pointerType:'touch'});await mobile.waitForTimeout(80);check('touch release throws',(await diag(mobile)).cargo.throwId===1);await mobile.close();
+  const gamepad=await browser.newPage();await gamepad.addInitScript(()=>{window.qaPad={axes:[0,0,.7,-.4],buttons:Array.from({length:16},()=>({pressed:false})),mapping:'standard'};navigator.getGamepads=()=>[window.qaPad];});await gamepad.goto(base);await gamepad.getByRole('button',{name:'Solo practice',exact:true}).click();await gamepad.getByRole('button',{name:'Delivery practice',exact:true}).click();await gamepad.waitForTimeout(150);const padAim=(await diag(gamepad)).players[0].aim;await gamepad.evaluate(()=>window.qaPad.axes=[0,0,0,0]);await gamepad.waitForTimeout(120);check('gamepad right stick aims and retains direction',Number.isFinite(padAim)&&Math.abs((await diag(gamepad)).players[0].aim-padAim)<.01);await gamepad.close();
+  check('new art and aiming have no browser runtime errors',errors.length===0);
+  if(!process.env.NO_REPORT)await writeFile('evidence/art-browser-results.json',JSON.stringify({date:new Date().toISOString(),base,checks,errors},null,2));
+}finally{await browser.close();}

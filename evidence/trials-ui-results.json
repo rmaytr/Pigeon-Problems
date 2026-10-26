@@ -1,0 +1,33 @@
+{
+  "date": "2026-10-26T14:47:03.766Z",
+  "base": "http://127.0.0.1:5173",
+  "checks": [
+    "course selection replicates in the lobby without initializing a run",
+    "guest course selector is read-only",
+    "both browser clients render the selected course",
+    "course jump replicates to the other browser",
+    "refresh restores the same pigeon and active course",
+    "retry keeps the course active and records one fall",
+    "reduced motion keeps the course simulation running",
+    "expert course renderer remains active",
+    "all six courses are present on mobile",
+    "mobile course menu has no horizontal overflow",
+    "touch flap creates lift in a rooftop trial",
+    "mobile course HUD has no horizontal overflow",
+    "no runtime or geometry errors"
+  ],
+  "performance": {
+    "frames": 241,
+    "durationMs": 4005.2000000119206,
+    "fps": 60.17177669012352,
+    "p95ms": 16.800000000000182,
+    "renderer": {
+      "frame": 377,
+      "calls": 100,
+      "triangles": 146966,
+      "points": 0,
+      "lines": 0
+    }
+  },
+  "errors": []
+}
