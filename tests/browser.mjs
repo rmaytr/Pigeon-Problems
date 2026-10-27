@@ -56,7 +56,7 @@ try{
   await p.keyboard.press('e');await q.waitForFunction(id=>window.pigeonDiagnostics().players.find(v=>v.id===id).grip!==null,local.id);check('online browser cargo ownership is synchronized',(await diag(q)).players.find(v=>v.id===local.id).grip!==null);
   await p.keyboard.press('Digit4');await q.waitForTimeout(100);check('contextual help ping reaches teammate',(await q.locator('body').innerText()).includes('Help!'));
   await p.keyboard.press('Escape');await p.getByRole('button',{name:'Leave shift',exact:true}).click();check('leaving releases voice resources',!(await diag(p)).voice.enabled&&(await p.locator('audio').count())===0);
-  await b.close();
+  await b.close();await a.close();
   const mobile=await browser.newContext({viewport:{width:390,height:844},isMobile:true,hasTouch:true}),m=await mobile.newPage();await m.goto(base);await wait(m,()=>!!window.pigeonDiagnostics);
   check('mobile homepage has no horizontal overflow',await m.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));await m.screenshot({path:new URL('mobile-home.png',out).pathname.replace(/^\/(\w:)/,'$1')});
   await m.getByRole('button',{name:'Solo practice',exact:true}).click();await m.getByRole('button',{name:'Delivery practice',exact:true}).click();await m.getByRole('button',{name:'Hop and flap',exact:true}).dispatchEvent('pointerdown',{pointerId:1,clientX:200,clientY:720});await wait(m,()=>window.pigeonDiagnostics().players[0].y>.5);check('touch flap control creates lift',(await diag(m)).players[0].y>.5);await m.getByRole('button',{name:'Hop and flap',exact:true}).dispatchEvent('pointerup',{pointerId:1});

@@ -25,7 +25,7 @@ physical-controller compatibility, enjoyment or balance. Read-only
 `window.pigeonDiagnostics()` supports assertions; production has no test-only
 position/state write endpoint.
 
-CI runs on Ubuntu with Node 24 and downloaded Chromium. Local Chrome runs are
+CI runs on Ubuntu 24.04 with Node 24 and downloaded Chromium. Local Chrome runs are
 reported separately. Software WebGL and a 0.25 device pixel ratio reduce raster
 work on runners without a hardware GPU while preserving the CSS viewport/layout
 sizes and all assertions. This is functional browser QA, not full-resolution visual
