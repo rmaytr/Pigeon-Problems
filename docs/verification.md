@@ -10,6 +10,11 @@ checkout. Then run `npm run test:integration`. Install Playwright Chromium with
 Both managed runners start/stop their own local Node server and explicitly target
 localhost. They do not require credentials or contact the public backend.
 
+CI runs the four browser suites on independent runners after the rules/build/
+transport job passes. All 65 checks run; a failure in one suite does not skip the
+other suites. To reproduce one suite locally, use
+`node scripts/verify.mjs ui release-browser` (or another listed suite name).
+
 | Layer | Command / scripts | What is asserted |
 |---|---|---|
 | Core rules | `npm test` — six `.test.mjs` files, 62 tests | Movement/cargo, aim, trial routes, mechanism timing, input/session validation and voice resource lifecycle |

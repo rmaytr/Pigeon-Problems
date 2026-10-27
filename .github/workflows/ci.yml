@@ -15,7 +15,7 @@ concurrency:
 
 jobs:
   verify:
-    name: Node 24 · tests, build and browser QA
+    name: Node 24 · rules, build and WebSockets
     runs-on: ubuntu-24.04
     timeout-minutes: 20
     env:
@@ -39,7 +39,30 @@ jobs:
         run: npm run build
       - name: Test real local WebSockets and delayed transport
         run: npm run test:integration
+
+  browser:
+    name: Browser · ${{ matrix.suite }}
+    needs: verify
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        suite: [browser, art-browser, trials-ui-browser, release-browser]
+    env:
+      CI: 'true'
+      BROWSER_CHANNEL: chromium
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6.5.0
+        with:
+          node-version: '24'
+          cache: npm
+      - name: Install locked dependencies
+        run: npm ci
       - name: Install browser and Linux dependencies
         run: npx playwright install --with-deps chromium
-      - name: Test real rendered UI, aiming, trials and recovery
-        run: npm run test:ui
+      - name: Test isolated browser suite
+        run: node scripts/verify.mjs ui ${{ matrix.suite }}

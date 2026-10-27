@@ -6,6 +6,8 @@ import net from 'node:net';
 
 const mode=process.argv[2],port=Number(process.env.PORT||5173);
 if(!['integration','ui'].includes(mode))throw Error('Use: node scripts/verify.mjs integration|ui');
+const uiSuites=['browser','art-browser','trials-ui-browser','release-browser'],selected=process.argv[3];
+if(selected&&(mode!=='ui'||!uiSuites.includes(selected)))throw Error('Unknown browser suite: '+selected);
 if(!Number.isInteger(port)||port<1024||port>45535)throw Error('PORT must be 1024–45535 (HMR uses PORT + 20000).');
 const base=`http://127.0.0.1:${port}`;
 const env={...process.env,PORT:String(port),CLIENT_URL:base,TEST_URL:base,NO_REPORT:'1',BROWSER_CHANNEL:process.env.BROWSER_CHANNEL||'chromium'};
@@ -24,7 +26,7 @@ try{
     if(healthy)break;await delay(200);
   }
   if(!healthy)throw Error('Local verification server did not become healthy.');
-  const suites=mode==='integration'?['network','aim-network','latency']:['browser','art-browser','trials-ui-browser','release-browser'];
+  const suites=mode==='integration'?['network','aim-network','latency']:selected?[selected]:uiSuites;
   for(const suite of suites){
     console.log(`\nRunning ${suite} against ${base}`);
     const child=spawn(process.execPath,[`tests/${suite}.mjs`],{env,stdio:'inherit'});
