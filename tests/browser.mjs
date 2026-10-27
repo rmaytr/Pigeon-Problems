@@ -14,11 +14,13 @@ async function walk(page,x,z){
   let held=[];
   for(let i=0;i<250;i++){
     const d=await diag(page),me=d.players.find(p=>p.id===d.id),dx=x-me.x,dz=z-me.z;
-    if(Math.hypot(dx,dz)<.25){for(const k of held)await page.keyboard.up(k);await page.waitForTimeout(140);return;}
+    if(Math.hypot(dx,dz)<.25){for(const k of held)await page.keyboard.up(k);await wait(page,()=>{const d=window.pigeonDiagnostics(),p=d.players.find(p=>p.id===d.id);return Math.hypot(p.vx,p.vz)<.05;});return;}
     const sx=dx*.903-dz*.43,sz=dx*.43+dz*.903,l=Math.max(.01,Math.hypot(sx,sz));
     const next=[];if(Math.abs(sx/l)>.38)next.push(sx>0?'d':'a');if(Math.abs(sz/l)>.38)next.push(sz>0?'s':'w');
     for(const k of held)if(!next.includes(k))await page.keyboard.up(k);for(const k of next)if(!held.includes(k))await page.keyboard.down(k);held=next;
-    await page.waitForTimeout(65);
+    // Count actual simulation advances, rather than spending the pilot's entire
+    // iteration budget observing one unchanged frame on a software renderer.
+    await page.waitForFunction(t=>window.pigeonDiagnostics().t>t,d.t,{timeout:15000});
   }
   for(const k of held)await page.keyboard.up(k);throw Error('Browser movement stalled at '+JSON.stringify(await diag(page)));
 }

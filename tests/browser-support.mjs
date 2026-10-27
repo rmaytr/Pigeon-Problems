@@ -4,7 +4,9 @@ import {chromium as nativeChromium} from '@playwright/test';
 // hosted runners. CI frame timings are deliberately excluded from benchmarks.
 const ci=process.env.CI==='true';
 export const chromium={async launch(options={}){
-  const browser=await nativeChromium.launch({...options,args:[...(ci?['--use-gl=angle','--use-angle=swiftshader','--enable-unsafe-swiftshader']:[]),...(options.args||[])]});
+  // Use Playwright's bundled headless shell for "chromium". The explicit
+  // "chrome" channel remains available for installed desktop Chrome checks.
+  const browser=await nativeChromium.launch({...options,channel:options.channel==='chromium'?undefined:options.channel,args:[...(ci?['--use-gl=angle','--use-angle=swiftshader','--enable-unsafe-swiftshader']:[]),...(options.args||[])]});
   const newContext=browser.newContext.bind(browser),newPage=browser.newPage.bind(browser);
   const prepare=async context=>{
     if(ci)context.setDefaultNavigationTimeout(60000);
