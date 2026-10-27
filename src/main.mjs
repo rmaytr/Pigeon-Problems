@@ -126,7 +126,7 @@ function modalHTML(){
 function renderUI(force=false){
   // Do not replace focused form/range elements on incoming network snapshots.
   const phase=state?.phase??screen;
-  const signature=JSON.stringify([phase,connection,modal,toast,state?.mode,state?.course,state?.trial?.stamps,state?.trial?.checkpoint,state?.trial?.falls,state?.trial?.ready,state?.trial?.cargoDelivered,state?.order,state?.completed,state?.players.map(p=>[p.id,p.name,p.connected,p.ready,p.grip]),Math.round((state?.players.find(p=>p.id===id)?.stamina??1)*10),Math.round(state?.cargo?.condition??100),state?.events.at(-1)?.id,Math.floor(state?.t??0),voice.enabled,voice.muted]);
+  const signature=JSON.stringify([phase,connection,modal,toast,state?.mode,state?.course,state?.trial?.stamps,state?.trial?.checkpoint,state?.trial?.falls,state?.trial?.ready,state?.trial?.cargoDelivered,state?.order,state?.completed,state?.players.map(p=>[p.id,p.name,p.connected,p.ready,p.grip]),Math.round((state?.players.find(p=>p.id===id)?.stamina??1)*10),Math.round(state?.cargo?.condition??100),state?.events.at(-1)?.id,phase==='playing'?Math.floor(state?.t??0):0,voice.enabled,voice.muted]);
   if(!force&&lastUI===signature)return;
   if(!force&&modal)return;
   lastUI=signature;

@@ -16,8 +16,12 @@ copy so another developer cannot accidentally target the owner's Sites project.
 
 The public repository starts from the release source at
 `e18c51b79c36743ff62587102d63b653de567347`, plus portfolio/submission artifacts.
-Source files in `src/`, `server/` and `public/` are preserved from that snapshot.
-Publication changes concern documentation, test portability and verification tooling.
+Game rules, rendering assets and server files are preserved from that snapshot.
+Publication changes concern documentation, test portability and verification tooling,
+plus one necessary UI correction in `src/main.mjs`: an idle lobby no longer rebuilds
+its controls as the hidden simulation clock advances. The trial UI suite asserts
+that the same control stays attached across idle snapshots. This source fix has
+not been deployed to the existing live game.
 The original deployment history remains in its original checkout; this repository
 does not pretend to reconstruct the development commit history.
 
