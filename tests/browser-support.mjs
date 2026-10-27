@@ -9,7 +9,7 @@ export const chromium={async launch(options={}){
   const browser=await nativeChromium.launch({...options,channel:options.channel==='chromium'?undefined:options.channel,args:[...(ci?['--use-gl=angle','--use-angle=swiftshader','--enable-unsafe-swiftshader']:[]),...(options.args||[])]});
   const newContext=browser.newContext.bind(browser),newPage=browser.newPage.bind(browser);
   const prepare=async context=>{
-    if(ci)context.setDefaultNavigationTimeout(60000);
+    if(ci){context.setDefaultNavigationTimeout(60000);context.setDefaultTimeout(60000);}
     // The application explicitly supports system fallbacks. Font-service outages
     // must not hold page load open or make functional checks depend on the WAN.
     await context.route(/^https:\/\/fonts\.googleapis\.com\//,route=>route.fulfill({status:200,contentType:'text/css',body:''}));

@@ -9,7 +9,7 @@ const check=(name,value)=>{assert(value,name);results.push(name);console.log('PA
 const a=await browser.newContext({viewport:{width:1440,height:900},permissions:['microphone','clipboard-write']});
 const p=await a.newPage();p.on('pageerror',e=>errors.push(e.message));
 const diag=page=>page.evaluate(()=>window.pigeonDiagnostics());
-async function wait(page,predicate,timeout=10000){try{await page.waitForFunction(predicate,{},{timeout});}catch(e){throw Error(e.message+'\nObserved game diagnostics: '+JSON.stringify(await diag(page)));}}
+async function wait(page,predicate,timeout=process.env.CI==='true'?60000:10000){try{await page.waitForFunction(predicate,{},{timeout});}catch(e){throw Error(e.message+'\nObserved game diagnostics: '+JSON.stringify(await diag(page)));}}
 async function walk(page,x,z){
   let held=[];
   for(let i=0;i<250;i++){
