@@ -64,6 +64,7 @@ against the production game by default.
 | [Release edges](../evidence/release-browser-results.json) | 17 checks including injected outage/races, microphone cleanup and 320px mobile layout |
 | [Solo routes](../evidence/trials-browser-results.json) | All six keyboard-driven courses |
 | [Two clients](../evidence/trials-network-2.json), [four clients](../evidence/trials-network-4.json) | All six public server courses, identical results and rematches |
+| [Local four-client routes](../evidence/trials-network-local-4.json) | Historical local completion of all six courses |
 | [Delivery rendering](../evidence/neighborhood-performance.json) | Short local sample of the delivery neighborhood |
 
 The recorded expert sample is 241 frames in approximately 4.005 seconds at

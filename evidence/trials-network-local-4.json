@@ -1,0 +1,52 @@
+{
+  "date": "2026-10-26T08:02:42.994Z",
+  "base": "http://127.0.0.1:5173",
+  "room": "6EYZKM",
+  "count": 4,
+  "results": [
+    {
+      "time": 16.2,
+      "falls": 0,
+      "medal": "Gold",
+      "score": 1445,
+      "course": "chimneys"
+    },
+    {
+      "time": 15.9,
+      "falls": 0,
+      "medal": "Gold",
+      "score": 1506,
+      "course": "laundry"
+    },
+    {
+      "time": 16.2,
+      "falls": 0,
+      "medal": "Gold",
+      "score": 1535,
+      "course": "gusts"
+    },
+    {
+      "time": 17.9,
+      "falls": 0,
+      "medal": "Gold",
+      "score": 1498,
+      "course": "clockwork"
+    },
+    {
+      "time": 17.2,
+      "falls": 0,
+      "medal": "Gold",
+      "score": 1561,
+      "course": "freight"
+    },
+    {
+      "time": 28.1,
+      "falls": 4,
+      "medal": "Bronze",
+      "score": 1418,
+      "course": "peak"
+    }
+  ],
+  "rematch": true,
+  "input": "real WebSockets, server-owned positions, normal inputs/actions only"
+}
