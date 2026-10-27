@@ -1,8 +1,10 @@
 # Contributing
 
 Start with the [README](README.md), [architecture](docs/architecture.md) and
-[development guide](docs/development.md). The project owner has not yet selected
-a project-wide license; resolve contribution/reuse terms with the owner first.
+[development guide](docs/development.md). This is a proprietary portfolio project
+with [all rights reserved](LICENSE). Bug reports are welcome. Please obtain the
+owner's prior written agreement on contribution terms before submitting code or
+assets; this guide does not grant permission to reuse the project materials.
 
 For a bug report, include the mode/course, player count, browser/OS, input device,
 steps to reproduce, expected/actual behavior and a screenshot if useful. Do not
@@ -12,7 +14,7 @@ Keep changes focused and preserve the shared server/client simulation boundary.
 For behavior changes, add regression coverage where it tests a meaningful rule.
 Use the existing test runner rather than introducing a parallel framework.
 
-Before a pull request:
+For an agreed contribution, run these checks before a pull request:
 
 ```sh
 npm ci

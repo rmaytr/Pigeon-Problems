@@ -16,8 +16,10 @@ affiliation or endorsement is implied. Screenshots in `docs/assets/` and recordi
 in `evidence/` show this project's actual renderer. The profile image is a model
 inspection render; the other screenshots are gameplay captures.
 
-No project-wide license has been selected by the owner. Third-party licenses
-below apply to their own components and do not license the original game code/art.
+Original project materials are proprietary, with [all rights reserved](../LICENSE),
+to the extent the owner holds rights in them. Third-party licenses below apply to
+their own components and do not license the original game code/art. The project's
+copyright notice does not restrict rights granted by these third-party licenses.
 
 ## Runtime packages
 

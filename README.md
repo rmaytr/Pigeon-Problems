@@ -232,6 +232,9 @@ See [contributing](CONTRIBUTING.md), [third-party notices](docs/third-party-noti
 and [deployment notes](docs/deployment.md). Models, textures, UI art and synthesized
 audio are original procedural work. Fonts and dependencies retain their own licenses.
 
-**Project license: not yet selected by the owner.** No project-wide open-source
-license is granted in this publication. Public source availability and third-party
-licenses are separate; choose a project license before inviting code reuse.
+**Proprietary — all rights reserved.** See the [copyright notice](LICENSE).
+The source is public for portfolio review; reuse of the original project materials
+requires the owner's prior written permission, except as permitted by applicable
+law or GitHub's terms. Public repositories remain viewable and forkable within
+GitHub under its [Terms of Service](https://docs.github.com/en/site-policy/github-terms/github-terms-of-service).
+Third-party components retain their separate licenses.
