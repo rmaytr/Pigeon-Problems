@@ -37,6 +37,9 @@ sizes and all assertions. This is functional browser QA, not full-resolution vis
 certification; timing/performance in CI is not used as a benchmark. Hosted font
 requests are blocked in tests to exercise the supported system fallback without
 depending on an external font service. Normal gameplay still loads its fonts.
+The hosted Ubuntu image supplies Chrome's system libraries, so CI downloads only
+the headless browser instead of upgrading apt packages. A fresh Linux installation
+should follow the development guide's `--with-deps` instructions.
 
 ## Longer route checks
 

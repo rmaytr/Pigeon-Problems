@@ -62,7 +62,11 @@ jobs:
           cache: npm
       - name: Install locked dependencies
         run: npm ci
-      - name: Install browser and Linux dependencies
-        run: npx playwright install --with-deps chromium
+      - name: Verify hosted browser libraries
+        run: google-chrome --version
+      - name: Install bundled Chromium headless shell
+        # The hosted Ubuntu image already supplies Chrome's system libraries.
+        # Browser launch still validates dependencies; avoid redundant apt upgrades.
+        run: npx playwright install --only-shell chromium
       - name: Test isolated browser suite
         run: node scripts/verify.mjs ui ${{ matrix.suite }}
