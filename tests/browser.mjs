@@ -9,7 +9,7 @@ const check=(name,value)=>{assert(value,name);results.push(name);console.log('PA
 const a=await browser.newContext({viewport:{width:1440,height:900},permissions:['microphone','clipboard-write']});
 const p=await a.newPage();p.on('pageerror',e=>errors.push(e.message));
 const diag=page=>page.evaluate(()=>window.pigeonDiagnostics());
-async function wait(page,predicate,timeout=10000){await page.waitForFunction(predicate,{},{timeout});}
+async function wait(page,predicate,timeout=10000){try{await page.waitForFunction(predicate,{},{timeout});}catch(e){throw Error(e.message+'\nObserved game diagnostics: '+JSON.stringify(await diag(page)));}}
 async function walk(page,x,z){
   let held=[];
   for(let i=0;i<250;i++){
@@ -27,10 +27,13 @@ try{
   check('homepage has a rendered 3D scene', (await diag(p)).renderer.triangles>10000);
   await p.getByRole('button',{name:'Solo practice',exact:true}).click();await p.getByRole('button',{name:'Delivery practice',exact:true}).click();await wait(p,()=>window.pigeonDiagnostics().phase==='playing');
   check('solo practice begins playable tutorial',(await diag(p)).solo);
+  await p.keyboard.down('Shift'); // Explicit keyboard aim; UI cursor position must not steer this keyboard-only route.
   await p.keyboard.down('Space');await wait(p,()=>window.pigeonDiagnostics().players[0].y>1);check('keyboard hop produces lift',(await diag(p)).players[0].y>1);await p.keyboard.up('Space');
   await wait(p,()=>window.pigeonDiagnostics().players[0].ground);await walk(p,.4,0);await p.keyboard.press('e');await p.waitForTimeout(120);check('keyboard grabs actual cargo',(await diag(p)).players[0].grip!==null);
-  await walk(p,.4,4.9);await walk(p,12,4.9);await walk(p,12,0);await p.keyboard.press('e');await wait(p,()=>window.pigeonDiagnostics().order===1);
-  check('browser delivery completes using only keyboard movement and placement',(await diag(p)).completed.length===1);
+  // Use the inner half of the detour: carrying forward at z=4.9 can put the
+  // beak/load beyond the starting roof's edge before turning onto the bridge.
+  await walk(p,.4,4.1);await walk(p,12,4.1);await walk(p,12,0);await p.keyboard.press('e');await wait(p,()=>window.pigeonDiagnostics().order===1);
+  check('browser delivery completes using only keyboard movement and placement',(await diag(p)).completed.length===1);await p.keyboard.up('Shift');
   await p.screenshot({path:new URL('gameplay.png',out).pathname.replace(/^\/(\w:)/,'$1')});
   await p.keyboard.press('y');await p.waitForTimeout(100);check('cargo recall preserves checkpoint',(await diag(p)).order===1);
   await p.getByRole('button',{name:'Open sound, controls and accessibility settings'}).click();await p.locator('#motion').check();await p.locator('[data-remap="gust"]').click();await p.keyboard.press('g');await p.getByRole('button',{name:'Close dialog',exact:true}).click();check('key remapping works',(await diag(p)).keys.gust==='KeyG');
@@ -47,9 +50,10 @@ try{
   const id=(await diag(p)).id;await p.reload();await wait(p,()=>window.pigeonDiagnostics().connection==='online');check('refresh returns same pigeon',(await diag(p)).id===id);check('mute preference survives refresh',(await diag(p)).voice.muted===false);
   // Refresh transfers dispatch lead to the surviving crew, preserving the room.
   await q.getByRole('button',{name:'Start the shift',exact:true}).click();await wait(p,()=>window.pigeonDiagnostics().phase==='playing');
-  await p.keyboard.down('d');await p.waitForTimeout(400);await p.keyboard.up('d');await p.waitForTimeout(120);
+  await p.keyboard.down('d');await wait(p,()=>{const d=window.pigeonDiagnostics();return d.players.find(v=>v.id===d.id).x>-.3;});await p.keyboard.up('d');
+  await q.waitForFunction(id=>window.pigeonDiagnostics().players.find(v=>v.id===id).x>-.5,(await diag(p)).id);
   const local=(await diag(p)),remote=(await diag(q)).players.find(v=>v.id===local.id);check('browser motion synchronizes to remote client',remote.x>-.5);
-  await p.keyboard.press('e');await p.waitForTimeout(180);check('online browser cargo ownership is synchronized',(await diag(q)).players.find(v=>v.id===local.id).grip!==null);
+  await p.keyboard.press('e');await q.waitForFunction(id=>window.pigeonDiagnostics().players.find(v=>v.id===id).grip!==null,local.id);check('online browser cargo ownership is synchronized',(await diag(q)).players.find(v=>v.id===local.id).grip!==null);
   await p.keyboard.press('Digit4');await q.waitForTimeout(100);check('contextual help ping reaches teammate',(await q.locator('body').innerText()).includes('Help!'));
   await p.keyboard.press('Escape');await p.getByRole('button',{name:'Leave shift',exact:true}).click();check('leaving releases voice resources',!(await diag(p)).voice.enabled&&(await p.locator('audio').count())===0);
   await b.close();
